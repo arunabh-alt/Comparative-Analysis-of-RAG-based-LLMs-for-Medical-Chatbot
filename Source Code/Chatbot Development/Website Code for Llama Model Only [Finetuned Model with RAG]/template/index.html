@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Interface</title>
+    <style>
+        /* Basic styling for the entire page */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;  /* Full viewport height */
+        }
+
+        /* Container for the chat interface */
+        #chat-container {
+            width: 80%;
+            max-width: 600px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Slight shadow for elevation */
+            padding: 20px;
+        }
+
+        /* Styling for the headline section */
+        #headline {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Styling for the headline text */
+        #headline h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #007bff;  /* Primary blue color */
+        }
+
+        /* Container for displaying messages */
+        #messages {
+            height: 300px;  /* Fixed height with scroll */
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;  /* Light gray border */
+            border-radius: 5px;
+            background-color: #f9f9f9;  /* Slightly off-white background */
+        }
+
+        /* Styling for individual messages */
+        .message {
+            margin: 10px 0;
+        }
+
+        /* User messages aligned to the right, with blue text */
+        .user-message {
+            text-align: right;
+            color: #007bff;
+        }
+
+        /* Bot messages aligned to the left, with dark gray text */
+        .bot-message {
+            text-align: left;
+            color: #333;
+        }
+
+        /* Container for user input and send button */
+        #user-input-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Styling for the user input text field */
+        #user-input {
+            flex: 1;  /* Takes up remaining space next to the button */
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        /* Styling for the send button */
+        #send-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;  /* Primary blue background */
+            color: white;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        /* Hover effect for the send button */
+        #send-button:hover {
+            background-color: #0056b3;  /* Darker blue on hover */
+        }
+    </style>
+</head>
+<body>
+
+<!-- Main container for the chat interface -->
+<div id="chat-container">
+    <!-- Headline of the chat interface -->
+    <div id="headline">
+        <h1>RAG-Based Medical Chatbot Using Llama2-7B LLM</h1>
+    </div>
+    <!-- Container for displaying chat messages -->
+    <div id="messages">
+        <!-- Messages will be appended here dynamically -->
+    </div>
+    <!-- Container for user input field and send button -->
+    <div id="user-input-container">
+        <input type="text" id="user-input" placeholder="Type your question here...">
+        <button id="send-button" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+    /* Function to handle sending the user's message */
+    async function sendMessage() {
+        const userInput = document.getElementById('user-input').value;  // Get user input
+        if (!userInput) return;  // Do nothing if input is empty
+
+        displayMessage('user-message', userInput);  // Display user message in the chat
+        document.getElementById('user-input').value = '';  // Clear input field
+
+        try {
+            const response = await fetch('/chat', {  // Send the input to the server using a POST request
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },  // Set request header to JSON
+                body: JSON.stringify({ question: userInput })  // Send the user input as JSON
+            });
+
+            const data = await response.json();  // Parse the JSON response
+            if (response.ok) {
+                displayMessage('bot-message', data.answer);  // Display the bot's response in the chat
+            } else {
+                displayMessage('bot-message', 'Error: ' + data.error);  // Display an error message if the request fails
+            }
+        } catch (error) {
+            displayMessage('bot-message', 'An error occurred while communicating with the server.');  // Handle any network errors
+        }
+    }
+
+    /* Function to display a message in the chat */
+    function displayMessage(className, message) {
+        const messagesDiv = document.getElementById('messages');  // Get the messages container
+        const messageElement = document.createElement('div');  // Create a new div for the message
+        messageElement.className = `message ${className}`;  // Add the message and user/bot class
+        messageElement.textContent = message;  // Set the text content of the message
+        messagesDiv.appendChild(messageElement);  // Append the message to the chat
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;  // Auto-scroll to the latest message
+    }
+</script>
+
+</body>
+</html>
