@@ -17,6 +17,17 @@ Two distinct datasets were used for fine-tuning the LLMs in this project:
 - **Meadow-MedQA**: A publicly available dataset on Hugging Face with **10,178 training instances**. Each instance includes an input, instruction, and output.
 - **MedMCQA**: A large-scale, multiple-choice question-answering dataset from Kaggle, consisting of **194,000 questions** across 21 medical subjects. The dataset is divided into training, testing, and validation sets in CSV format.
 
+And USMLE MedQA and Comprehensive Medical Q&A were used for MCQ evaluation and Subjective question evaluation respectively. 
+
+### Dataset References
+
+| Datasets                     | Related Research Paper                                                                 | Website Link                                                                                     |
+|------------------------------|----------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
+| Medical-Meadow-MedQA          | Medalpaca - an open-source collection of medical conversational AI models and training data (Han. T., 2023) | [Medical-Meadow-MedQA](https://huggingface.co/datasets/medalpaca/medical_meadow_medqa)           |
+| MedMCQA                       | MedMCQA : A Large-scale Multi-Subject Multi-Choice Dataset for Medical domain Question Answering (Pal, 2022)  | [MedMCQA](https://www.kaggle.com/datasets/thedevastator/medmcqa-medical-mcq-dataset)             |
+| USMLE MedQA                   | Towards Expert-Level Medical Question Answering with Large Language Models (Singhal. K, 2023)   | [USMLE MedQA](https://www.kaggle.com/datasets/moaaztameer/medqa-usmle)                           |
+| Comprehensive Medical Q&A     | A question-entailment approach to question answering (Abacha. A.B, 2019)                     | [Comprehensive Medical Q&A](https://www.kaggle.com/datasets/thedevastator/comprehensive-medical-q-a-dataset) |
+
 ## Vector Database Architecture
 
 The vector database was constructed from a diverse corpus of medical texts, including books, notes, and journals. Key components include:
